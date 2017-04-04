@@ -1,26 +1,28 @@
-package app.direct.api.domain.subscription;
+package app.direct.api.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import app.direct.api.domain.enumeration.LineType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
-public class OrderLines {
+public class OrderLine {
     private LineType type;
     private Double quantity;
     private Double price;
     private Double percentage;
     private Double totalPrice;
     private String description;
-    private Collection<Parameter> parameters;
-    
-    public OrderLines(){
-        
+    private Collection<Parameter> parameters = new ArrayList<>();
+
+    public OrderLine() {
+
     }
-    
 }

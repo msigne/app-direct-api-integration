@@ -1,8 +1,5 @@
-package app.direct.api.domain.company;
+package app.direct.api.domain;
 
-import app.direct.api.domain.Address;
-import app.direct.api.domain.Contact;
-import app.direct.api.domain.Entity;
 import app.direct.api.domain.enumeration.Attributes;
 import app.direct.api.domain.enumeration.Size;
 import lombok.AllArgsConstructor;

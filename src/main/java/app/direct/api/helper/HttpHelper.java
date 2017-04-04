@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * EntityHelper for http calls.
+ * Entity helper for http calls.
  *
  * @param <T> Expected response body type for http calls.
  */
@@ -116,7 +116,7 @@ public class HttpHelper<T> {
      * 
      * @param requestId request identifier.
      * @param entityBuilder generic function that help to build the HttpEntity object to send.
-     * @return
+     * @return The HttpEntity object that need to be send.
      */
     private HttpEntity<String> buildEntity(String requestId, Function<HttpHeaders, HttpEntity<String>> entityBuilder) {
         HttpHeaders headers = new HttpHeaders();

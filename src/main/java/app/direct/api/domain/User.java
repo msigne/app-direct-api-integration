@@ -1,16 +1,11 @@
-package app.direct.api.domain.user;
+package app.direct.api.domain;
 
+import app.direct.api.domain.enumeration.Title;
 import app.direct.api.domain.enumeration.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import app.direct.api.domain.Address;
-import app.direct.api.domain.Contact;
-import app.direct.api.domain.Entity;
-import app.direct.api.domain.Address.AddressBuilder;
-import app.direct.api.domain.enumeration.Title;
 
 @Getter
 @Setter

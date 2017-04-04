@@ -1,4 +1,4 @@
-package app.direct.api.domain.exception;
+package app.direct.api.exception;
 
 @SuppressWarnings("serial")
 public class SerializeException extends RuntimeException {

@@ -1,4 +1,4 @@
-package app.direct.api.domain.subscription;
+package app.direct.api.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

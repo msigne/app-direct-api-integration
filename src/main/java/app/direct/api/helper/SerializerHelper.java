@@ -3,7 +3,7 @@ package app.direct.api.helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.direct.api.domain.exception.SerializeException;
+import app.direct.api.exception.SerializeException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- * Several Utilities to serialize/deserialize from/to JSON format.
+ * Several helpers to serialize/deserialize from/to JSON format.
  */
 public final class SerializerHelper {
     private static final Logger LOG = LoggerFactory.getLogger(SerializerHelper.class);
@@ -21,7 +21,7 @@ public final class SerializerHelper {
     }
 
     /**
-     * Serializes this Object structure to JSON format.
+     * Serializes the provided object structure to JSON format.
      *
      * @return object in JSON format (String).
      */

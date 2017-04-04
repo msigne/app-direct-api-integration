@@ -1,21 +1,22 @@
-package app.direct.api.domain.subscription;
+package app.direct.api.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-import app.direct.api.domain.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 public class Order extends Entity{
     private String paymentPlanId;
     private String discountId;
-    private Collection<OrderLines> orderLines;
+    private Collection<OrderLine> orderLines = new ArrayList<>();
     
-    public Order(){
-        
+    public Order(){        
     }
 }
