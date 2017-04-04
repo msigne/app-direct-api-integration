@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 
 import app.direct.api.domain.company.Company;
 import app.direct.api.domain.company.CompanyResponse;
-import app.direct.api.domain.helper.HttpHelper;
-import app.direct.api.domain.helper.SerializerHelper;
 import app.direct.api.domain.subscription.Order;
 import app.direct.api.domain.subscription.OrderResponse;
 import app.direct.api.domain.user.User;
 import app.direct.api.domain.user.UserResponse;
+import app.direct.api.helper.HttpHelper;
+import app.direct.api.helper.SerializerHelper;
 
 @Component
 public class DefaultAppDirectApiConsumer implements AppDirectApiConsumer {

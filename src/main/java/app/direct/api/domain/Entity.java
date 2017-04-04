@@ -1,6 +1,6 @@
 package app.direct.api.domain;
 
-import app.direct.api.domain.helper.SerializerHelper;
+import app.direct.api.helper.SerializerHelper;
 import lombok.Data;
 
 @Data

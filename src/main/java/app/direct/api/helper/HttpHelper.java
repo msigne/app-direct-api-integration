@@ -1,4 +1,4 @@
-package app.direct.api.domain.helper;
+package app.direct.api.helper;
 
 import java.util.Arrays;
 import java.util.UUID;

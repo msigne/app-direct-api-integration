@@ -1,4 +1,4 @@
-package app.direct.api.domain.helper;
+package app.direct.api.helper;
 
 public class SerializerHelperTest {
 

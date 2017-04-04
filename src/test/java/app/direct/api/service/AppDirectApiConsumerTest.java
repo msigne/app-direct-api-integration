@@ -1,4 +1,4 @@
-package app.direct.api.domain.service;
+package app.direct.api.service;
 
 public class AppDirectApiConsumerTest {
 
