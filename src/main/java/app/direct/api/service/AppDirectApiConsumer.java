@@ -1,4 +1,4 @@
-package app.direct.api.domain.service;
+package app.direct.api.service;
 
 import app.direct.api.domain.company.Company;
 import app.direct.api.domain.company.CompanyResponse;
