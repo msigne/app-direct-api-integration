@@ -21,11 +21,11 @@ This service exposes four operations.
 * [SubscriptionCancel](https://docs.appdirect.com/developer/apis/billing-api-guide/cancelling-a-subscription)
 
 ## Get the source code from github<a id="get-source"></a>
-....
 
+```
 git clone https://github.com/msigne/app-direct-api-integration.git
 
-...
+```
 
 ## Build and Run<a id="build-run"></a>
 
