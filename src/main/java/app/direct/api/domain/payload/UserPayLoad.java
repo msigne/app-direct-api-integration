@@ -5,13 +5,18 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import app.direct.api.domain.User;
 
-@JsonInclude(value=Include.NON_NULL)
+/**
+ * Represents an Http payload that contain user information
+ * 
+ * @author Martin Blaise Signe.
+ */
+@JsonInclude(value = Include.NON_NULL)
 public class UserPayLoad extends User {
     public UserPayLoad() {
 
     }
-    
-    public UserPayLoad(User u){
+
+    public UserPayLoad(User u) {
         setContact(u.getContact());
         setEmail(u.getEmail());
         setFirstName(u.getFirstName());

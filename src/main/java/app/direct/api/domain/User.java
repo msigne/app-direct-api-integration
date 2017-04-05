@@ -7,11 +7,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a user.
+ * 
+ * @author Martin Blaise Signe.
+ */
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-public class User extends Entity{
+public class User extends Entity {
     private String id;
     private String email;
     private String firstName;

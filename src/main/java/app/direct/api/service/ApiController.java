@@ -1,4 +1,4 @@
-package app.direct.api.controllers;
+package app.direct.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.direct.api.api.AppDirectApiConsumer;
+import app.direct.api.consumer.AppDirectApiConsumer;
 import app.direct.api.domain.payload.CompanyPayLoad;
 import app.direct.api.domain.payload.SubscriptionPayload;
 import app.direct.api.domain.payload.UserPayLoad;
@@ -48,7 +48,7 @@ public class ApiController {
 
     @RequestMapping(value = "/subscriptions/{subscriptionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.DELETE)
     public ResponseEntity<String> subscriptionCancel(@PathVariable String subscriptionId) {
-        final Boolean r = api.subscriptionDelete(subscriptionId);
+        final Boolean r = api.subscriptionCancel(subscriptionId);
         return r ? ResponseEntity.ok("Subscription successfully canceled.") : ResponseEntity.ok("Subscription has not been canceled.");
     }
 }

@@ -10,11 +10,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a company.
+ */
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-@JsonInclude(value=Include.NON_NULL)
+@JsonInclude(value = Include.NON_NULL)
 public class Company extends Entity {
     private String name;
     private Boolean enabled;

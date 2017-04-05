@@ -5,7 +5,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import app.direct.api.domain.Company;
 
-@JsonInclude(value=Include.NON_NULL)
+/**
+ * Represents an Http payload that contain company information
+ * 
+ * @author Martin Blaise Signe.
+ */
+@JsonInclude(value = Include.NON_NULL)
 public class CompanyPayLoad extends Company {
 
     public CompanyPayLoad() {

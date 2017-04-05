@@ -2,17 +2,24 @@ package app.direct.api.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+/**
+ * Represents a Parameter.
+ * 
+ * @author Martin Blaise Signe.
+ */
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
-public class Parameter {
+public class Parameter extends Entity {
 
     private String name;
     private String value;
-    
-    public Parameter(){
-        
+
+    public Parameter() {
+
     }
 }

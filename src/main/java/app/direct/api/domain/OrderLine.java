@@ -9,11 +9,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents an Order line.
+ * 
+ * @author Martin Blaise Signe.
+ */
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-public class OrderLine {
+public class OrderLine extends Entity {
     private LineType type;
     private Double quantity;
     private Double price;

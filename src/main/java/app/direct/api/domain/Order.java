@@ -11,12 +11,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents an order.
+ * 
+ * @author Martin Blaise Signe.
+ */
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @JsonInclude(value = Include.NON_NULL)
-public class Order {
+public class Order extends Entity {
     private String paymentPlanId;
     private String discountId;
     private List<OrderLine> orderLines = new ArrayList<>();

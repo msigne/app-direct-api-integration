@@ -8,6 +8,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a subscription.
+ * 
+ * @author Martin Blaise Signe.
+ */
 @Getter
 @Setter
 @Builder

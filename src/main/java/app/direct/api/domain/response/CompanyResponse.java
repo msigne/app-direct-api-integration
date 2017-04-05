@@ -4,15 +4,20 @@ import app.direct.api.domain.Company;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents an Http response body that contain company information
+ * 
+ * @author Martin Blaise Signe.
+ */
 @Getter
 @Setter
 public class CompanyResponse extends Company {
     private String creationDate;
-    
+
     public CompanyResponse() {
     }
-    
-    public CompanyResponse(Company c){
+
+    public CompanyResponse(Company c) {
         setAddress(c.getAddress());
         setAttributes(c.getAttributes());
         setContact(c.getContact());
@@ -23,4 +28,4 @@ public class CompanyResponse extends Company {
         setSize(c.getSize());
         setWebsite(c.getWebsite());
     }
- }
+}

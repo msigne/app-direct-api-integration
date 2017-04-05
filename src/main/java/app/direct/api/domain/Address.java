@@ -5,11 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents an address.
+ * 
+ * @author Martin Blaise Signe.
+ */
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-public class Address {
+public class Address extends Entity{
     private String city;
     private String country;
     private String state;

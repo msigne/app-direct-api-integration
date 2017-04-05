@@ -20,8 +20,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import app.direct.api.api.AppDirectApiConsumer;
-import app.direct.api.api.DefaultAppDirectApiConsumer;
+import app.direct.api.consumer.AppDirectApiConsumer;
+import app.direct.api.consumer.DefaultAppDirectApiConsumer;
 import app.direct.api.domain.Address;
 import app.direct.api.domain.Company;
 import app.direct.api.domain.Contact;
@@ -131,7 +131,7 @@ public class AppDirectApiConsumerTest {
     public void testOrderDeleteSuccess() {
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Order successfully canceled");
         when(http.doDelete(anyString(), any(), anyString())).thenReturn(response);
-        final Boolean result = api.subscriptionDelete("subscription-Id");
+        final Boolean result = api.subscriptionCancel("subscription-Id");
         verify(http, times(1)).doDelete(anyString(), any(), anyString());
         assertThat(result, is(true));
     }
@@ -141,7 +141,7 @@ public class AppDirectApiConsumerTest {
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found.");
         when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
         when(http.doDelete(anyString(), any(), anyString())).thenReturn(response);
-        final Boolean result = api.subscriptionDelete("subscription-Id");
+        final Boolean result = api.subscriptionCancel("subscription-Id");
         verify(http, times(1)).doDelete(anyString(), any(), anyString());
         assertThat(result, is(false));
     }

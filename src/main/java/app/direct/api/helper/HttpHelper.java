@@ -26,7 +26,7 @@ public class HttpHelper<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class);
 
-    @Value("${rest.auth.header}")
+    @Value("${api.auth.header}")
     private String authHeader;
 
     private final RestTemplate restTemplate;

@@ -5,6 +5,11 @@ import app.direct.api.domain.enumeration.Roles;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents an Http response body that contain user information
+ * 
+ * @author Martin Blaise Signe.
+ */
 @Getter
 @Setter
 public class UserResponse extends User {
