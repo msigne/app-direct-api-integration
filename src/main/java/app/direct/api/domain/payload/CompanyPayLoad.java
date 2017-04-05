@@ -1,7 +1,11 @@
 package app.direct.api.domain.payload;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import app.direct.api.domain.Company;
 
+@JsonInclude(value=Include.NON_NULL)
 public class CompanyPayLoad extends Company {
 
     public CompanyPayLoad() {

@@ -1,7 +1,7 @@
 package app.direct.api.domain;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import app.direct.api.domain.enumeration.LineType;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class OrderLine {
     private Double percentage;
     private Double totalPrice;
     private String description;
-    private Collection<Parameter> parameters = new ArrayList<>();
+    private List<Parameter> parameters = new ArrayList<>();
 
     public OrderLine() {
 

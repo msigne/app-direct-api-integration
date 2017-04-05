@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import app.direct.api.api.AppDirectApiConsumer;
 import app.direct.api.domain.payload.CompanyPayLoad;
-import app.direct.api.domain.payload.OrderPayLoad;
+import app.direct.api.domain.payload.SubscriptionPayload;
 import app.direct.api.domain.payload.UserPayLoad;
 import app.direct.api.domain.response.CompanyResponse;
-import app.direct.api.domain.response.OrderResponse;
+import app.direct.api.domain.response.SubscriptionResponse;
 import app.direct.api.domain.response.UserResponse;
 
 @RestController
@@ -40,16 +40,15 @@ public class ApiController {
         return ResponseEntity.ok(r.toJson());
     }
 
-    @RequestMapping(value = "/companies/{companyId}/users/{userId}/orders", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
-    public ResponseEntity<String> userAdd(@RequestBody OrderPayLoad order, @PathVariable String companyId, @PathVariable String userId) {
-        final OrderResponse r = api.orderAdd(order, companyId, userId);
+    @RequestMapping(value = "/companies/{companyId}/users/{userId}/subscriptions", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
+    public ResponseEntity<String> subscriptionAdd(@RequestBody SubscriptionPayload subscription, @PathVariable String companyId, @PathVariable String userId) {
+        final SubscriptionResponse r = api.subscriptionAdd(subscription, companyId, userId);
         return ResponseEntity.ok(r.toJson());
     }
 
-    @RequestMapping(value = "/orders/{orderId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.DELETE)
-    public ResponseEntity<String> userAdd(@PathVariable String orderId) {
-        final Boolean r = api.orderDelete(orderId);
-        return r ? ResponseEntity.ok("Order successfully canceled.") : ResponseEntity.ok("Order has not been canceled.");
+    @RequestMapping(value = "/subscriptions/{subscriptionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.DELETE)
+    public ResponseEntity<String> subscriptionCancel(@PathVariable String subscriptionId) {
+        final Boolean r = api.subscriptionDelete(subscriptionId);
+        return r ? ResponseEntity.ok("Subscription successfully canceled.") : ResponseEntity.ok("Subscription has not been canceled.");
     }
-
 }

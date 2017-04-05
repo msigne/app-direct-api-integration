@@ -1,10 +1,10 @@
 package app.direct.api.api;
 
 import app.direct.api.domain.payload.CompanyPayLoad;
-import app.direct.api.domain.payload.OrderPayLoad;
+import app.direct.api.domain.payload.SubscriptionPayload;
 import app.direct.api.domain.payload.UserPayLoad;
 import app.direct.api.domain.response.CompanyResponse;
-import app.direct.api.domain.response.OrderResponse;
+import app.direct.api.domain.response.SubscriptionResponse;
 import app.direct.api.domain.response.UserResponse;
 
 public interface AppDirectApiConsumer {
@@ -25,14 +25,14 @@ public interface AppDirectApiConsumer {
 
     /**
      * 
-     * @param order
+     * @param subscription
      * @return
      */
-    OrderResponse orderAdd(OrderPayLoad order, String companyId, String userId);
+    SubscriptionResponse subscriptionAdd(SubscriptionPayload subscription, String companyId, String userId);
 
     /**
      * 
-     * @param orderId
+     * @param subscriptionId
      */
-    Boolean orderDelete(String orderId);
+    Boolean subscriptionDelete(String subscriptionId);
 }

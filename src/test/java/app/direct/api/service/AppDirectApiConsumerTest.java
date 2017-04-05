@@ -27,6 +27,7 @@ import app.direct.api.domain.Company;
 import app.direct.api.domain.Contact;
 import app.direct.api.domain.Order;
 import app.direct.api.domain.OrderLine;
+import app.direct.api.domain.Subscription;
 import app.direct.api.domain.User;
 import app.direct.api.domain.enumeration.Attributes;
 import app.direct.api.domain.enumeration.LineType;
@@ -34,10 +35,10 @@ import app.direct.api.domain.enumeration.Size;
 import app.direct.api.domain.enumeration.Title;
 import app.direct.api.domain.enumeration.UserStatus;
 import app.direct.api.domain.payload.CompanyPayLoad;
-import app.direct.api.domain.payload.OrderPayLoad;
+import app.direct.api.domain.payload.SubscriptionPayload;
 import app.direct.api.domain.payload.UserPayLoad;
 import app.direct.api.domain.response.CompanyResponse;
-import app.direct.api.domain.response.OrderResponse;
+import app.direct.api.domain.response.SubscriptionResponse;
 import app.direct.api.domain.response.UserResponse;
 import app.direct.api.helper.HttpHelper;
 
@@ -49,7 +50,7 @@ public class AppDirectApiConsumerTest {
     private AppDirectApiConsumer api;
     private Company company;
     private User user;
-    private Order order;
+    private Subscription subscription;
 
     @Before
     public void setup() {
@@ -59,7 +60,7 @@ public class AppDirectApiConsumerTest {
                 .website("https://www.test.com").build();
         user = User.builder().contact(Contact.builder().build()).email("user@localhost").firstName("firstName").language("English").lastName("last-name")
                 .openId("open-id").registrationCode("registration-code").status(UserStatus.ACTIVE).title(Title.MR).build();
-        order = simpleOrder();
+        subscription = simpleSubscription();
     }
 
     @Test
@@ -106,33 +107,31 @@ public class AppDirectApiConsumerTest {
     }
 
     @Test
-    public void testOrderAddSuccess() {
-        final OrderResponse or = new OrderResponse(order);
-        or.setCreationDate("2016-04-04");
-        final OrderPayLoad op = new OrderPayLoad(order);
+    public void testSubscriptionAddSuccess() {
+        final SubscriptionResponse sr = new SubscriptionResponse(subscription);
+        final SubscriptionPayload sp = new SubscriptionPayload(subscription);
 
-        final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CREATED).body(or.toJson());
+        final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CREATED).body(sr.toJson());
         when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
-        final OrderResponse cresponse = api.orderAdd(op, "company-id", "user-id");
-        verify(http, times(1)).doPost(anyString(), eq(op.toJson()), any(), anyString());
-        assertThat(or.toJson(), is(cresponse.toJson()));
+        final SubscriptionResponse cresponse = api.subscriptionAdd(sp, "company-id", "user-id");
+        verify(http, times(1)).doPost(anyString(), eq(sp.toJson()), any(), anyString());
+        assertThat(sr.toJson(), is(cresponse.toJson()));
     }
 
     @Test(expected = RuntimeException.class)
     public void testOrderAddFail() {
-        final OrderPayLoad op = new OrderPayLoad(order);
+        final SubscriptionPayload sp = new SubscriptionPayload(subscription);
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CONFLICT).body("Order already exist");
         when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
-        api.orderAdd(op, "company-id", "user-id");
-        verify(http, times(1)).doPost(anyString(), eq(op.toJson()), any(), anyString());
+        api.subscriptionAdd(sp, "company-id", "user-id");
+        verify(http, times(1)).doPost(anyString(), eq(sp.toJson()), any(), anyString());
     }
-    
-    
+
     @Test
     public void testOrderDeleteSuccess() {
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Order successfully canceled");
         when(http.doDelete(anyString(), any(), anyString())).thenReturn(response);
-        final Boolean result = api.orderDelete("order-Id");
+        final Boolean result = api.subscriptionDelete("subscription-Id");
         verify(http, times(1)).doDelete(anyString(), any(), anyString());
         assertThat(result, is(true));
     }
@@ -142,26 +141,24 @@ public class AppDirectApiConsumerTest {
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found.");
         when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
         when(http.doDelete(anyString(), any(), anyString())).thenReturn(response);
-        final Boolean result = api.orderDelete("order-Id");
+        final Boolean result = api.subscriptionDelete("subscription-Id");
         verify(http, times(1)).doDelete(anyString(), any(), anyString());
         assertThat(result, is(false));
     }
 
-    
-    
-
     /**
-     * Build a simple order for testing purposes.
+     * Build a simple subscription for testing purposes.
      * 
-     * @return The built order.
+     * @return The built subscription.
      */
-    private Order simpleOrder() {
+    private Subscription simpleSubscription() {
         final List<OrderLine> lines =
                 Arrays.asList(OrderLine.builder().description("item1").percentage(0.19).price(2.00).quantity(3.0).type(LineType.ITEM).build(),
                         OrderLine.builder().description("item2").percentage(0.19).price(10.00).quantity(2.0).type(LineType.ITEM).build(),
                         OrderLine.builder().description("item3").percentage(0.19).price(2.00).quantity(8.0).type(LineType.ITEM).build());
 
-        return Order.builder().discountId("discount-id").orderLines(lines).paymentPlanId("payment-plan-id").build();
+        final Order o = Order.builder().discountId("discount-id").orderLines(lines).paymentPlanId("payment-plan-id").build();
+        return Subscription.builder().order(o).build();
     }
 
 }

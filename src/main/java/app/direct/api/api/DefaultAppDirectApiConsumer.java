@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import app.direct.api.domain.payload.CompanyPayLoad;
-import app.direct.api.domain.payload.OrderPayLoad;
+import app.direct.api.domain.payload.SubscriptionPayload;
 import app.direct.api.domain.payload.UserPayLoad;
 import app.direct.api.domain.response.CompanyResponse;
-import app.direct.api.domain.response.OrderResponse;
+import app.direct.api.domain.response.SubscriptionResponse;
 import app.direct.api.domain.response.UserResponse;
 import app.direct.api.helper.HttpHelper;
 import app.direct.api.helper.SerializerHelper;
@@ -49,19 +49,19 @@ public class DefaultAppDirectApiConsumer implements AppDirectApiConsumer {
     }
 
     @Override
-    public OrderResponse orderAdd(OrderPayLoad order, String companyId, String userId) {
-        final String payLoad = order.toJson();
+    public SubscriptionResponse subscriptionAdd(SubscriptionPayload subscription, String companyId, String userId) {
+        final String payLoad = subscription.toJson();
         final String path = API_PATH + "billing/v1/companies/" + companyId + "/users/" + userId + "/subscriptions";
         final ResponseEntity<String> response = httpHelper.doPost(path, payLoad, String.class, null);
         if (!response.getStatusCode().equals(HttpStatus.CREATED)) {
             throw new RuntimeException(response.getBody());
         }
-        return SerializerHelper.deserialized(response.getBody(), OrderResponse.class);
+        return SerializerHelper.deserialized(response.getBody(), SubscriptionResponse.class);
     }
 
     @Override
-    public Boolean orderDelete(String orderId) {
-        final String path = API_PATH + "billing/v1/subscriptions/" + orderId;
+    public Boolean subscriptionDelete(String subscriptionId) {
+        final String path = API_PATH + "billing/v1/subscriptions/" + subscriptionId;
         final ResponseEntity<String> response = httpHelper.doDelete(path, String.class, null);
         return response.getStatusCode().equals(HttpStatus.NO_CONTENT);
     }
