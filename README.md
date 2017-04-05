@@ -41,10 +41,12 @@ mvn clean install
 From your IDE, right-click on the "AppDirectApiIntegrationApplication" class at the root of your Java package hierarchy, and run it directly. 
 You should also be able to debug it as easily.
 
-This project use the lombok plugin to avoid boilerplate code.
+This project use the lombok annotations to avoid boilerplate code.
 
 In IntelliJ or Eclipse , for Lombok annotations, you need to enable annotation processing, change the compiler from Ajc to Javac,
 and probably install the Lombok plugin.
+
+See how to setup the lombok pluging at https://projectlombok.org/index.html
 
 
 ### As a Maven target
