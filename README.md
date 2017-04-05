@@ -5,6 +5,7 @@ AppDirect API integration
 
 * [Overview](#overview)
 * [Documentation](https://docs.appdirect.com/developer/apis/billing-api-guide/oauth-credentials)
+* [Get the source](#get-source)
 * [Build and Run](#build-run)
 * [Testing](#Testing)
 
@@ -18,6 +19,13 @@ This service exposes four operations.
 * [UserAdd](https://docs.appdirect.com/developer/apis/billing-api-guide/creating-a-user)
 * [SubscriptionAdd](https://docs.appdirect.com/developer/apis/billing-api-guide/creating-a-subscription)
 * [SubscriptionCancel](https://docs.appdirect.com/developer/apis/billing-api-guide/cancelling-a-subscription)
+
+## Get the source code from github<a id="get-source"></a>
+....
+
+git clone https://github.com/msigne/app-direct-api-integration.git
+
+...
 
 ## Build and Run<a id="build-run"></a>
 
