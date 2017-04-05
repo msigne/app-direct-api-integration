@@ -14,17 +14,17 @@ AppDirect API integration is a service that provided some samples that show how 
 
 This service exposes four operations.
 
-*[CompanyAdd](https://docs.appdirect.com/developer/apis/billing-api-guide/creating-a-company)
-*[UserAdd](https://docs.appdirect.com/developer/apis/billing-api-guide/creating-a-user)
-*[SubscriptionAdd](https://docs.appdirect.com/developer/apis/billing-api-guide/creating-a-subscription)
-*[SubscriptionCancel](https://docs.appdirect.com/developer/apis/billing-api-guide/cancelling-a-subscription)
+* [CompanyAdd](https://docs.appdirect.com/developer/apis/billing-api-guide/creating-a-company)
+* [UserAdd](https://docs.appdirect.com/developer/apis/billing-api-guide/creating-a-user)
+* [SubscriptionAdd](https://docs.appdirect.com/developer/apis/billing-api-guide/creating-a-subscription)
+* [SubscriptionCancel](https://docs.appdirect.com/developer/apis/billing-api-guide/cancelling-a-subscription)
 
 ## Build and Run<a id="build-run"></a>
 
 **Note**: This is maven project and  Maven need to be correctly setup on the host that is used to build or run this service.
 
 ```
-mvn clean install && \
+mvn clean install
 
 ```
 
@@ -41,7 +41,7 @@ and probably install the Lombok plugin.
 
 ### As a Maven target
 
-To run the application from command line, from the project root folder. you may run  the following commands after building your application:
+To run the application from command line. you may run  the following commands from the project root folder after building your application:
 ```
 mvn spring-boot:run
 ```
@@ -49,11 +49,11 @@ mvn spring-boot:run
 
 ## Testing<a id="Testing"></a>
 
-*Swagger has been setup for integration testing.
-By default when you are running the service locally, the application is avaible at http://localhost:8080/swagger-ui.html
-[Testing endpoint](http://localhost:8080/swagger-ui.html)
-Launch the swagger ui and click on api-controller to load avaible operations.
+* Swagger has been setup for integration testing.
+By default when you are running the service locally, the application is avaible at *http://localhost:8080/swagger-ui.html*
 
-*Normally Unit tests has been made to test all the operations.
+Launch the *swagger ui* and click on api-controller to load avaible operations.
+
+* Normally Unit tests has been made to test all the operations.
 
 
