@@ -14,21 +14,20 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 
 @SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class HttpHelperTest {
 
     @Mock
-    private RestTemplate restTemplate;
+    private OAuth2RestOperations restTemplate;
 
     private HttpHelper<String> http;
 
     @Before
     public void setup() throws Exception {
         http = new HttpHelper<String>(restTemplate);
-        TestingHelper.setFieldValue(http, "authHeader", "header");
     }
 
     @Test

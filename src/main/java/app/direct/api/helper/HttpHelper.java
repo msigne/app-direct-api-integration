@@ -7,14 +7,13 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Entity helper for http calls.
@@ -26,13 +25,10 @@ public class HttpHelper<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class);
 
-    @Value("${api.auth.header}")
-    private String authHeader;
-
-    private final RestTemplate restTemplate;
+    private final OAuth2RestOperations restTemplate;
 
     @Autowired
-    public HttpHelper(RestTemplate restTemplate) {
+    public HttpHelper(OAuth2RestOperations restTemplate) {
         this.restTemplate = restTemplate;
     }
 
@@ -119,10 +115,11 @@ public class HttpHelper<T> {
      * @return The HttpEntity object that need to be send.
      */
     private HttpEntity<String> buildEntity(String requestId, Function<HttpHeaders, HttpEntity<String>> entityBuilder) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML));
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", authHeader);
+        final String token = restTemplate.getAccessToken() == null ? "" : restTemplate.getAccessToken().getValue();
+        headers.set("Authorization", token);
         final String rId = requestId == null ? UUID.randomUUID().toString() : requestId;
         headers.set("request-id", rId);
         return entityBuilder.apply(headers);
