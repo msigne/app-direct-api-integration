@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthConsumer;
-import oauth.signpost.http.HttpRequest;
 
 @SpringBootApplication
 public class AppDirectApiIntegrationApplication {
@@ -25,13 +24,6 @@ public class AppDirectApiIntegrationApplication {
         URL url = new URL("https://www.appdirect.com/api/events/dummyChange");
         HttpURLConnection request = (HttpURLConnection) url.openConnection();
         consumer.sign(request);
-        System.out.println(request.getResponseCode());
-        System.out.println(request.getResponseMessage());
-        
-        System.out.println(request.getResponseMessage());
         request.connect();
-        System.out.println(request.getResponseCode());
-        System.out.println(request.getResponseMessage());
-
     }
 }

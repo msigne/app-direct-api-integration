@@ -20,5 +20,4 @@ public abstract class Entity {
     public String toJson() {
         return SerializerHelper.toJson(this);
     }
-
 }
