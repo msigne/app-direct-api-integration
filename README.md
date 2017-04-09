@@ -59,8 +59,11 @@ mvn spring-boot:run
 
 ## Testing<a id="Testing"></a>
 
+* Note: I was unable to successfully setup the authentification for API consumption thus. trying to integrate test any operation will result to 401 - Unauthorized. Sorry about that.
+
 * Swagger has been setup for integration testing.
 By default when you are running the service locally, the application is avaible at *http://localhost:8080/swagger-ui.html*
+
 
 Launch the *swagger ui* and click on api-controller to load avaible operations.
 
