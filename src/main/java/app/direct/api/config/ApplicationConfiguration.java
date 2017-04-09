@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.client.token.DefaultAccessTokenReques
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
+import oauth.signpost.basic.DefaultOAuthConsumer;
+
 /**
  * Global Spring configuration.
  * 
@@ -24,10 +26,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 public class ApplicationConfiguration {
 
     public final static String COMPONENT_BASE_PACKAGE = "app.direct.api";
-    
+
     @Value("${api.auth.token.url}")
     private String tokenUrl;
-
+    @Value("${api.auth.token.authorize}")
+    private String authUrl;
     @Value("${api.auth.token.consumer.secret}")
     private String consumerSecret;
 
@@ -40,6 +43,7 @@ public class ApplicationConfiguration {
         resource.setAccessTokenUri(tokenUrl);
         resource.setClientId(consumerKey);
         resource.setClientSecret(consumerSecret);
+        resource.setGrantType("password");
         return resource;
     }
 
@@ -47,5 +51,10 @@ public class ApplicationConfiguration {
     public OAuth2RestOperations restTemplate(OAuth2ProtectedResourceDetails resource) {
         AccessTokenRequest atr = new DefaultAccessTokenRequest();
         return new OAuth2RestTemplate(resource, new DefaultOAuth2ClientContext(atr));
+    }
+
+    @Bean
+    public DefaultOAuthConsumer consumer() {
+        return new DefaultOAuthConsumer(consumerKey, consumerSecret);
     }
 }

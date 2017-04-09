@@ -19,7 +19,7 @@ public class AppDirectApiIntegrationApplicationTests {
     private AppDirectApiConsumer api;
     
     @Autowired
-    private HttpHelper<String> http;
+    private HttpHelper http;
 	
     @Test
 	public void contextLoads() {

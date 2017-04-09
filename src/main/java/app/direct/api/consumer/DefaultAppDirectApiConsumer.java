@@ -1,5 +1,7 @@
 package app.direct.api.consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,14 +24,16 @@ import app.direct.api.helper.SerializerHelper;
  */
 @Component
 public class DefaultAppDirectApiConsumer implements AppDirectApiConsumer {
-   
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultAppDirectApiConsumer.class);
+
     @Value("${api.root.path}")
     private String apiRootPath;
 
-    private final HttpHelper<String> httpHelper;
+    private final HttpHelper httpHelper;
 
     @Autowired
-    public DefaultAppDirectApiConsumer(HttpHelper<String> httpHelper) {
+    public DefaultAppDirectApiConsumer(HttpHelper httpHelper) {
         this.httpHelper = httpHelper;
     }
 
@@ -37,10 +41,13 @@ public class DefaultAppDirectApiConsumer implements AppDirectApiConsumer {
     public UserResponse userAdd(UserPayLoad user, String companyId) {
         final String payLoad = user.toJson();
         final String path = apiRootPath + "account/v1/companies" + companyId + "/users";
-        final ResponseEntity<String> response = httpHelper.doPost(path, payLoad, String.class, null);
+        LOGGER.info("Request to process recieved. url={}. body={}", payLoad, path);
+        final ResponseEntity<String> response = httpHelper.doPost(path, payLoad);
         if (!response.getStatusCode().equals(HttpStatus.CREATED)) {
-            throw new RuntimeException(response.getBody());
+            LOGGER.error("Failed to add the user. status ={}. response={}", response.getStatusCodeValue(), response.getBody());
+            throw new RuntimeException(response.getStatusCodeValue() + " - " + response.getBody());
         }
+        LOGGER.info("Request successfully proced recieved. status={}. response={}", response.getStatusCodeValue(), response.getBody());
         return SerializerHelper.deserialized(response.getBody(), UserResponse.class);
     }
 
@@ -48,10 +55,13 @@ public class DefaultAppDirectApiConsumer implements AppDirectApiConsumer {
     public CompanyResponse companyAdd(CompanyPayLoad company) {
         final String payLoad = company.toJson();
         final String path = apiRootPath + "account/v1/companies";
-        final ResponseEntity<String> response = httpHelper.doPost(path, payLoad, String.class, null);
+        LOGGER.info("Request to process recieved. url={}. body={}", payLoad, path);
+        final ResponseEntity<String> response = httpHelper.doPost(path, payLoad);
         if (!response.getStatusCode().equals(HttpStatus.CREATED)) {
-            throw new RuntimeException(response.getBody());
+            LOGGER.error("Failed to add the company. status ={}. response={}", response.getStatusCodeValue(), response.getBody());
+            throw new RuntimeException(response.getStatusCodeValue() + " - " + response.getBody());
         }
+        LOGGER.info("Request successfully proced recieved. status={}. response={}", response.getStatusCodeValue(), response.getBody());
         return SerializerHelper.deserialized(response.getBody(), CompanyResponse.class);
     }
 
@@ -59,17 +69,22 @@ public class DefaultAppDirectApiConsumer implements AppDirectApiConsumer {
     public SubscriptionResponse subscriptionAdd(SubscriptionPayload subscription, String companyId, String userId) {
         final String payLoad = subscription.toJson();
         final String path = apiRootPath + "billing/v1/companies/" + companyId + "/users/" + userId + "/subscriptions";
-        final ResponseEntity<String> response = httpHelper.doPost(path, payLoad, String.class, null);
+        LOGGER.info("Request to process recieved. url={}. body={}", payLoad, path);
+        final ResponseEntity<String> response = httpHelper.doPost(path, payLoad);
         if (!response.getStatusCode().equals(HttpStatus.CREATED)) {
-            throw new RuntimeException(response.getBody());
+            LOGGER.error("Failed to add the subscription. status ={}. response={}", response.getStatusCodeValue(), response.getBody());
+            throw new RuntimeException(response.getStatusCodeValue() + " - " + response.getBody());
         }
+        LOGGER.info("Request successfully proced recieved. status={}. response={}", response.getStatusCodeValue(), response.getBody());
         return SerializerHelper.deserialized(response.getBody(), SubscriptionResponse.class);
     }
 
     @Override
     public Boolean subscriptionCancel(String subscriptionId) {
         final String path = apiRootPath + "billing/v1/subscriptions/" + subscriptionId;
-        final ResponseEntity<String> response = httpHelper.doDelete(path, String.class, null);
+        LOGGER.info("Request to process recieved. url={}", path);
+        final ResponseEntity<String> response = httpHelper.doDelete(path);
+        LOGGER.info("Request successfully proced recieved. status={}. response={}", response.getStatusCodeValue(), response.getBody());
         return response.getStatusCode().equals(HttpStatus.NO_CONTENT);
     }
 }

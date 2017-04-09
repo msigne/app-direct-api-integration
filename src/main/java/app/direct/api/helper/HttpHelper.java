@@ -1,127 +1,82 @@
 package app.direct.api.helper;
 
-import java.util.Arrays;
-import java.util.UUID;
-import java.util.function.Function;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Component;
+
+import oauth.signpost.basic.DefaultOAuthConsumer;
 
 /**
  * Entity helper for http calls.
- *
- * @param <T> Expected response body type for http calls.
  */
 @Component
-public class HttpHelper<T> {
+public class HttpHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpHelper.class);
 
-    private final OAuth2RestOperations restTemplate;
+    private final DefaultOAuthConsumer consumer;
 
     @Autowired
-    public HttpHelper(OAuth2RestOperations restTemplate) {
-        this.restTemplate = restTemplate;
+    public HttpHelper(DefaultOAuthConsumer consumer) {
+        this.consumer = consumer;
     }
 
     /**
-     * Perform an HTTP request using the POST verb.
+     * Perfom a http call using the POST verb.
      * 
-     * @param url Resource URL.
-     * @param body incoming body request.
-     * @param clazz Expected response body type
+     * @param url Target URL
+     * @param body incoming request body
      * @return An ResponseEntity object that contains the response as a body.
      */
-    public ResponseEntity<T> doPost(String url, String body, Class<T> clazz, String requestId) {
+    public ResponseEntity<String> doPost(String url, String body) {
+        LOGGER.info("Request to send recieved. url =[{}]. Body =[{}]", url, body);
         try {
-            return restTemplate.exchange(url, HttpMethod.POST, buildEntity(requestId, (headers) -> {
-                return new HttpEntity<String>(body, headers);
-            }), clazz);
+            final URL path = new URL(url);
+            final HttpURLConnection request = (HttpURLConnection) path.openConnection();
+            consumer.sign(request);
+            request.setRequestMethod("POST");
+            request.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            request.setRequestProperty("Accept", "application/json");
+            request.setDoOutput(true);
+            final OutputStream os = request.getOutputStream();
+            os.write(body.getBytes("UTF-8"));
+            os.flush();
+            request.connect();
+            return ResponseEntity.status(request.getResponseCode()).body(request.getResponseMessage());
         } catch (Exception e) {
-            LOGGER.error("Request perform unsucessfully. requestBody={}, url={}", body, url, e);
-            throw e;
+            LOGGER.error("Error occured. message =[{}]", e.getMessage(), e);
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
         }
+
     }
 
     /**
-     * Perform an http request using the GET verb.
+     * Perfom a http call using the DELETE verb.
      * 
-     * @param url Resource URL.
-     * @param clazz Expected response body type
+     * @param url Target Url.
      * @return An ResponseEntity object that contains the response as a body.
      */
-
-    public ResponseEntity<T> doGet(String url, Class<T> clazz, String requestId) {
+    public ResponseEntity<String> doDelete(String url) {
+        LOGGER.info("Request to send recieved. url =[{}]", url);
         try {
-            return restTemplate.exchange(url, HttpMethod.GET, buildEntity(requestId, (headers) -> {
-                return new HttpEntity<String>(headers);
-            }), clazz);
+            final URL path = new URL(url);
+            final HttpURLConnection request = (HttpURLConnection) path.openConnection();
+            consumer.sign(request);
+            request.setRequestMethod("DELETE");
+            request.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            request.setRequestProperty("Accept", "application/json");
+            request.setDoOutput(true);
+            request.connect();
+            return ResponseEntity.status(request.getResponseCode()).body(request.getResponseMessage());
         } catch (Exception e) {
-            LOGGER.error("Request perform unsucessfully. url={}", url, e);
-            throw e;
+            LOGGER.error("Error occured. message =[{}]", e.getMessage(), e);
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
         }
-    }
-
-    /**
-     * Perform an http request using the PUT verb.
-     *
-     * @param url Resource URL
-     * @param body Body of the request
-     * @param clazz Expected type of the response
-     * @return
-     */
-    public ResponseEntity<T> doPut(String url, String body, Class<T> clazz, String requestId) {
-        try {
-            return restTemplate.exchange(url, HttpMethod.PUT, buildEntity(requestId, (headers) -> {
-                return new HttpEntity<String>(body, headers);
-            }), clazz);
-        } catch (Exception e) {
-            LOGGER.error("Request perform unsucessfully. requestBody={}, url={}", body, url, e);
-            throw e;
-        }
-    }
-
-    /**
-     * Perform an http request using the DELETE verb.
-     *
-     * @param url Resource URL
-     * @param clazz Expected type of the response
-     * @return
-     */
-    public ResponseEntity<T> doDelete(String url, Class<T> clazz, String requestId) {
-        try {
-            return restTemplate.exchange(url, HttpMethod.DELETE, buildEntity(requestId, (headers) -> {
-                return new HttpEntity<String>(headers);
-            }), clazz);
-        } catch (Exception e) {
-            LOGGER.error("Request perform unsucessfully. requestBody={}, url={}", url, e);
-            throw e;
-        }
-    }
-
-    /**
-     * Build an HttpEntity object that contain the authentification header and the body of the request to send.
-     * 
-     * @param requestId request identifier.
-     * @param entityBuilder generic function that help to build the HttpEntity object to send.
-     * @return The HttpEntity object that need to be send.
-     */
-    private HttpEntity<String> buildEntity(String requestId, Function<HttpHeaders, HttpEntity<String>> entityBuilder) {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        final String token = restTemplate.getAccessToken() == null ? "" : restTemplate.getAccessToken().getValue();
-        headers.set("Authorization", token);
-        final String rId = requestId == null ? UUID.randomUUID().toString() : requestId;
-        headers.set("request-id", rId);
-        return entityBuilder.apply(headers);
     }
 }

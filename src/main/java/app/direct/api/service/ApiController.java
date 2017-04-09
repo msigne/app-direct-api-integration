@@ -1,5 +1,7 @@
 package app.direct.api.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import app.direct.api.domain.response.UserResponse;
 @RequestMapping(value = "/api/v1")
 public class ApiController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiController.class);
     private final AppDirectApiConsumer api;
 
     @Autowired
@@ -41,8 +44,13 @@ public class ApiController {
      */
     @RequestMapping(value = "/companies", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
     public ResponseEntity<String> companyAdd(@RequestBody CompanyPayLoad company) {
-        final CompanyResponse r = api.companyAdd(company);
-        return ResponseEntity.ok(r.toJson());
+        try {
+            final CompanyResponse r = api.companyAdd(company);
+            return ResponseEntity.ok(r.toJson());
+        } catch (Exception e) {
+            LOGGER.error("Failed to add the company. message ={}. ", e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**
@@ -53,8 +61,13 @@ public class ApiController {
      */
     @RequestMapping(value = "/companies/{companyId}/users", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
     public ResponseEntity<String> userAdd(@RequestBody UserPayLoad user, @PathVariable String companyId) {
-        final UserResponse r = api.userAdd(user, companyId);
-        return ResponseEntity.ok(r.toJson());
+        try {
+            final UserResponse r = api.userAdd(user, companyId);
+            return ResponseEntity.ok(r.toJson());
+        } catch (Exception e) {
+            LOGGER.error("Failed to add the user. message ={}. ", e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**
@@ -67,8 +80,13 @@ public class ApiController {
                     method = RequestMethod.POST)
     public ResponseEntity<String> subscriptionAdd(@RequestBody SubscriptionPayload subscription, @PathVariable String companyId,
                                                   @PathVariable String userId) {
-        final SubscriptionResponse r = api.subscriptionAdd(subscription, companyId, userId);
-        return ResponseEntity.ok(r.toJson());
+        try {
+            final SubscriptionResponse r = api.subscriptionAdd(subscription, companyId, userId);
+            return ResponseEntity.ok(r.toJson());
+        } catch (Exception e) {
+            LOGGER.error("Failed to add the subscription. message ={}. ", e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**
@@ -79,7 +97,12 @@ public class ApiController {
      */
     @RequestMapping(value = "/subscriptions/{subscriptionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.DELETE)
     public ResponseEntity<String> subscriptionCancel(@PathVariable String subscriptionId) {
-        final Boolean r = api.subscriptionCancel(subscriptionId);
-        return r ? ResponseEntity.ok("Subscription successfully canceled.") : ResponseEntity.ok("Subscription has not been canceled.");
+        try {
+            final Boolean r = api.subscriptionCancel(subscriptionId);
+            return r ? ResponseEntity.ok("Subscription successfully canceled.") : ResponseEntity.ok("Subscription has not been canceled.");
+        } catch (Exception e) {
+            LOGGER.error("Failed to cancel the subscription. message ={}. ", e.getMessage(), e);
+            throw e;
+        }
     }
 }

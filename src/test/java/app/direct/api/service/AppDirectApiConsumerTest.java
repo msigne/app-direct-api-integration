@@ -2,7 +2,6 @@ package app.direct.api.service;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
@@ -46,7 +45,7 @@ import app.direct.api.helper.HttpHelper;
 public class AppDirectApiConsumerTest {
 
     @Mock
-    private HttpHelper<String> http;
+    private HttpHelper http;
     private AppDirectApiConsumer api;
     private Company company;
     private User user;
@@ -70,9 +69,9 @@ public class AppDirectApiConsumerTest {
         final CompanyPayLoad cp = new CompanyPayLoad(company);
 
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CREATED).body(cr.toJson());
-        when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
+        when(http.doPost(anyString(), anyString())).thenReturn(response);
         final CompanyResponse cresponse = api.companyAdd(cp);
-        verify(http, times(1)).doPost(anyString(), eq(cp.toJson()), any(), anyString());
+        verify(http, times(1)).doPost(anyString(), eq(cp.toJson()));
         assertThat(cr.toJson(), is(cresponse.toJson()));
     }
 
@@ -80,9 +79,9 @@ public class AppDirectApiConsumerTest {
     public void testCompanyAddFail() {
         final CompanyPayLoad cp = new CompanyPayLoad(company);
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CONFLICT).body("The company already exist");
-        when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
+        when(http.doPost(anyString(), anyString())).thenReturn(response);
         api.companyAdd(cp);
-        verify(http, times(1)).doPost(anyString(), eq(cp.toJson()), any(), anyString());
+        verify(http, times(1)).doPost(anyString(), eq(cp.toJson()));
     }
 
     @Test
@@ -91,9 +90,9 @@ public class AppDirectApiConsumerTest {
         ur.setCreationDate("2016-04-04");
         final UserPayLoad up = new UserPayLoad(user);
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CREATED).body(ur.toJson());
-        when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
+        when(http.doPost(anyString(), anyString())).thenReturn(response);
         final UserResponse cresponse = api.userAdd(up, "company-id");
-        verify(http, times(1)).doPost(anyString(), eq(up.toJson()), any(), anyString());
+        verify(http, times(1)).doPost(anyString(), eq(up.toJson()));
         assertThat(ur.toJson(), is(cresponse.toJson()));
     }
 
@@ -101,9 +100,9 @@ public class AppDirectApiConsumerTest {
     public void testUserAddFail() {
         final UserPayLoad up = new UserPayLoad(user);
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CONFLICT).body("The user already exist.");
-        when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
+        when(http.doPost(anyString(), anyString())).thenReturn(response);
         api.userAdd(up, "company-id");
-        verify(http, times(1)).doPost(anyString(), eq(up.toJson()), any(), anyString());
+        verify(http, times(1)).doPost(anyString(), eq(up.toJson()));
     }
 
     @Test
@@ -112,9 +111,9 @@ public class AppDirectApiConsumerTest {
         final SubscriptionPayload sp = new SubscriptionPayload(subscription);
 
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CREATED).body(sr.toJson());
-        when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
+        when(http.doPost(anyString(), anyString())).thenReturn(response);
         final SubscriptionResponse cresponse = api.subscriptionAdd(sp, "company-id", "user-id");
-        verify(http, times(1)).doPost(anyString(), eq(sp.toJson()), any(), anyString());
+        verify(http, times(1)).doPost(anyString(), eq(sp.toJson()));
         assertThat(sr.toJson(), is(cresponse.toJson()));
     }
 
@@ -122,27 +121,26 @@ public class AppDirectApiConsumerTest {
     public void testOrderAddFail() {
         final SubscriptionPayload sp = new SubscriptionPayload(subscription);
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CONFLICT).body("Order already exist");
-        when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
+        when(http.doPost(anyString(), anyString())).thenReturn(response);
         api.subscriptionAdd(sp, "company-id", "user-id");
-        verify(http, times(1)).doPost(anyString(), eq(sp.toJson()), any(), anyString());
+        verify(http, times(1)).doPost(anyString(), eq(sp.toJson()));
     }
 
     @Test
     public void testOrderDeleteSuccess() {
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("Order successfully canceled");
-        when(http.doDelete(anyString(), any(), anyString())).thenReturn(response);
+        when(http.doDelete(anyString())).thenReturn(response);
         final Boolean result = api.subscriptionCancel("subscription-Id");
-        verify(http, times(1)).doDelete(anyString(), any(), anyString());
+        verify(http, times(1)).doDelete(anyString());
         assertThat(result, is(true));
     }
 
     @Test
     public void testOrderDeleteFail() {
         final ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found.");
-        when(http.doPost(anyString(), any(), any(), anyString())).thenReturn(response);
-        when(http.doDelete(anyString(), any(), anyString())).thenReturn(response);
+        when(http.doDelete(anyString())).thenReturn(response);
         final Boolean result = api.subscriptionCancel("subscription-Id");
-        verify(http, times(1)).doDelete(anyString(), any(), anyString());
+        verify(http, times(1)).doDelete(anyString());
         assertThat(result, is(false));
     }
 
